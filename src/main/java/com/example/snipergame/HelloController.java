@@ -38,6 +38,7 @@ public class HelloController {
     double getBulletRadius() {
         return startBullet.getRadius();
     }
+
     double getPoligonHeight() {
         return poligonPane.heightProperty().getValue();
     }
