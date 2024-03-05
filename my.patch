@@ -1,0 +1,308 @@
+From 288bd3cc04077f24bca58a9b653d7a1ab636898e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=D0=A1=D0=B8=D0=BC=D0=BE=D0=BD=D1=8F=D0=BD=20=D0=92=D0=B0?=
+ =?UTF-8?q?=D0=B3=D0=B8=D0=BD=D0=B0=D0=BA=20=D0=90=D1=80=D0=B0=D0=B8=D0=BA?=
+ =?UTF-8?q?=D0=BE=D0=B2=D0=B8=D1=87?= <vsimonyan@dev.vtb.ru>
+Date: Sun, 3 Mar 2024 19:11:25 +0300
+Subject: [PATCH] Add bullet and game
+
+---
+ .idea/misc.xml                                |   2 +-
+ .idea/uiDesigner.xml                          | 124 ++++++++++++++++++
+ .../java/com/example/snipergame/Game.java     |  18 +++
+ .../example/snipergame/HelloController.java   |   4 +-
+ .../snipergame/gameElements/Bullet.java       |  43 ++++++
+ .../snipergame/{ => gameElements}/Target.java |   8 +-
+ src/main/java/module-info.java                |   2 +
+ 7 files changed, 193 insertions(+), 8 deletions(-)
+ create mode 100644 .idea/uiDesigner.xml
+ create mode 100644 src/main/java/com/example/snipergame/Game.java
+ create mode 100644 src/main/java/com/example/snipergame/gameElements/Bullet.java
+ rename src/main/java/com/example/snipergame/{ => gameElements}/Target.java (85%)
+
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index dd5e3ad..f585271 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -8,7 +8,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="openjdk-21" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+new file mode 100644
+index 0000000..2b63946
+--- /dev/null
++++ b/.idea/uiDesigner.xml
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/src/main/java/com/example/snipergame/Game.java b/src/main/java/com/example/snipergame/Game.java
+new file mode 100644
+index 0000000..745ba07
+--- /dev/null
++++ b/src/main/java/com/example/snipergame/Game.java
+@@ -0,0 +1,18 @@
++package com.example.snipergame;
++
++import com.example.snipergame.gameElements.Bullet;
++import com.example.snipergame.gameElements.Target;
++import javafx.scene.layout.Pane;
++import javafx.scene.shape.Circle;
++
++public class Game {
++
++    private Pane poligonPane;
++    private Target bigTarget;
++    private Target smallTarget;
++    private Bullet bullet;
++    
++
++    public Game()
++
++}
+diff --git a/src/main/java/com/example/snipergame/HelloController.java b/src/main/java/com/example/snipergame/HelloController.java
+index 08d488d..167db9c 100644
+--- a/src/main/java/com/example/snipergame/HelloController.java
++++ b/src/main/java/com/example/snipergame/HelloController.java
+@@ -1,5 +1,6 @@
+ package com.example.snipergame;
+ 
++import com.example.snipergame.gameElements.Target;
+ import javafx.application.Platform;
+ import javafx.fxml.FXML;
+ import javafx.scene.input.MouseEvent;
+@@ -83,9 +84,6 @@ public class HelloController {
+         } else return y;
+     }
+ 
+-    double getBulletRadius() {
+-        return bullet.getRadius();
+-    }
+ 
+     double getPoligonWidth() {
+         return poligonPane.getPrefWidth();
+diff --git a/src/main/java/com/example/snipergame/gameElements/Bullet.java b/src/main/java/com/example/snipergame/gameElements/Bullet.java
+new file mode 100644
+index 0000000..f910972
+--- /dev/null
++++ b/src/main/java/com/example/snipergame/gameElements/Bullet.java
+@@ -0,0 +1,43 @@
++package com.example.snipergame.gameElements;
++
++import javafx.scene.shape.Circle;
++
++public class Bullet {
++    private Circle cr;
++    private double poligonWidth;
++    private boolean isShooting;
++    public Bullet(Circle cr) {
++        this.cr = cr;
++        isShooting = false;
++    }
++
++    public void setPoligonWidth(double poligonWidth) {
++        this.poligonWidth = poligonWidth;
++    }
++
++    public void move() {
++        if(canMove()) {
++            cr.setLayoutX(getX() + 5);
++        }
++        else {
++            cr.setLayoutX(0);
++            isShooting = false;
++        }
++    }
++
++    boolean canMove() {
++        return getX() + getBulletRadius() + 5 < poligonWidth && isShooting;
++    }
++
++    public void setShooting(){
++        isShooting = true;
++    }
++
++    double getBulletRadius() {
++        return cr.getRadius();
++    }
++
++    double getX() {
++        return cr.getLayoutX();
++    }
++}
+diff --git a/src/main/java/com/example/snipergame/Target.java b/src/main/java/com/example/snipergame/gameElements/Target.java
+similarity index 85%
+rename from src/main/java/com/example/snipergame/Target.java
+rename to src/main/java/com/example/snipergame/gameElements/Target.java
+index a0159de..367075e 100644
+--- a/src/main/java/com/example/snipergame/Target.java
++++ b/src/main/java/com/example/snipergame/gameElements/Target.java
+@@ -1,4 +1,4 @@
+-package com.example.snipergame;
++package com.example.snipergame.gameElements;
+ 
+ import javafx.scene.shape.Circle;
+ 
+@@ -8,16 +8,16 @@ public class Target {
+     private final double moveDistant;
+     private boolean moveDown;
+ 
+-    Target(Circle cr, double _moveDistant) {
++    public Target(Circle cr, double _moveDistant) {
+         circle = cr;
+         moveDistant = _moveDistant;
+         moveDown = true;
+     }
+-    void setPoligonHeight(double value) {
++    public void setPoligonHeight(double value) {
+         poligonHeight = value;
+     }
+ 
+-    void moveAction() {
++    public void moveAction() {
+         switch (moveDown ? 1 : 0) {
+             case 1 -> moveDown();
+             case 0 ->moveUp();
+diff --git a/src/main/java/module-info.java b/src/main/java/module-info.java
+index 0d1f7bb..3e4682f 100644
+--- a/src/main/java/module-info.java
++++ b/src/main/java/module-info.java
+@@ -7,4 +7,6 @@ module com.example.snipergame {
+                         
+     opens com.example.snipergame to javafx.fxml;
+     exports com.example.snipergame;
++    exports com.example.snipergame.gameElements;
++    opens com.example.snipergame.gameElements to javafx.fxml;
+ }
+\ No newline at end of file
+-- 
+2.37.3
+

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<VBox alignment="CENTER" prefHeight="450.0" prefWidth="750.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.snipergame.HelloController">
+<VBox alignment="CENTER" prefHeight="450.0" prefWidth="750.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.snipergame.SniperGameController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
@@ -13,16 +13,17 @@
       <Pane prefHeight="400.0" prefWidth="750.0">
          <children>
             <Pane fx:id="resultsPane" layoutX="568.0" prefHeight="400.0" prefWidth="142.0">
-                <style>-fx-background-color: gray;</style>
+                <style>-fx-background-color: white;</style>
             </Pane>
             <Pane fx:id="menuPain" layoutY="338.0" prefHeight="62.0" prefWidth="568.0" style="-fx-background-color: red;">
                <children>
                   <Button fx:id="startButton" layoutX="10.0" layoutY="16.0" mnemonicParsing="false" onAction="#onStartClick" prefHeight="30.0" prefWidth="50.0" text="Start" />
+                  <Button fx:id="shootButton" layoutX="67.0" layoutY="16.0" mnemonicParsing="false" onAction="#onShootClick" prefHeight="30.0" prefWidth="50.0" text="Shoot" />
                </children>
             </Pane>
             <Pane fx:id="poligonPane" onMouseClicked="#clickM" prefHeight="338.0" prefWidth="568.0" style="-fx-background-color: green;">
                <children>
-                  <Circle fx:id="bullet" fill="DODGERBLUE" layoutX="56.0" layoutY="54.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="bullet" fill="DODGERBLUE" layoutX="10.0" layoutY="169.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fx:id="smallCircle" fill="DODGERBLUE" layoutX="550.0" layoutY="15.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fx:id="bigCircle" fill="DODGERBLUE" layoutX="425.0" layoutY="25.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
                </children></Pane>

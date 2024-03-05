@@ -7,4 +7,6 @@ module com.example.snipergame {
                         
     opens com.example.snipergame to javafx.fxml;
     exports com.example.snipergame;
+    exports com.example.snipergame.gameElements;
+    opens com.example.snipergame.gameElements to javafx.fxml;
 }

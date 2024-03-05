@@ -1,39 +1,40 @@
-package com.example.snipergame;
+package com.example.snipergame.gameElements;
 
 import javafx.scene.shape.Circle;
 
 public class Target {
     private final Circle circle;
     private double poligonHeight;
-    private final double moveDistant;
+    private final double speed;
     private boolean moveDown;
 
-    Target(Circle cr, double _moveDistant) {
+    public Target(Circle cr, double speed) {
         circle = cr;
-        moveDistant = _moveDistant;
+        this.speed = speed;
         moveDown = true;
     }
-    void setPoligonHeight(double value) {
+
+    public void setPoligonHeight(double value) {
         poligonHeight = value;
     }
 
-    void moveAction() {
+    public void moveAction() {
         switch (moveDown ? 1 : 0) {
             case 1 -> moveDown();
-            case 0 ->moveUp();
+            case 0 -> moveUp();
         }
     }
 
     private void moveDown() {
         if (canMoveDown())
-            move(moveDistant);
+            move(speed);
         else
             moveDown = false;
     }
 
     private void moveUp() {
         if (canMoveUp())
-            move(-moveDistant);
+            move(-speed);
         else
             moveDown = true;
     }
@@ -42,14 +43,24 @@ public class Target {
         circle.setLayoutY(getY() + y);
     }
 
+    public double getX() {
+        return circle.getLayoutX();
+    }
+
+    public double getY() {
+        return circle.getLayoutY();
+    }
+
+    public double getRadius() {
+        return circle.getRadius();
+    }
+
     private boolean canMoveDown() {
-        return getY() + moveDistant + circle.getRadius() < poligonHeight;
+        return getY() + speed + circle.getRadius() < poligonHeight;
     }
 
     private boolean canMoveUp() {
-        return getY() - moveDistant - circle.getRadius() > 0;
+        return getY() - speed - circle.getRadius() > 0;
     }
-    private double getY() {
-        return circle.getLayoutY();
-    }
+
 }
