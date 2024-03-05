@@ -7,6 +7,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
+import static com.example.snipergame.supportFunctions.MathUtils.square;
+
 public class Game {
     private Pane poligonPane;
     private Target bigTarget;
@@ -28,53 +30,42 @@ public class Game {
         bullet.setPoligonParams(poligonPane);
     }
 
-    void moveAction() {
+    public void moveAction() {
         if (thread != null) return;
 
-        thread = new Thread(
-                () -> {
-                    while (true) {
-                        Platform.runLater(
-                                () -> {
-                                    bigTarget.moveAction();
-                                    smallTarget.moveAction();
-                            try {
-                                bullet.move();
-                            } catch (Exception e) {
-                                bullet.moveToStart();
-                                //Пуля мимо
-                            }
-                            /*
-                            if (isHitting()) {
-                                sumPoints = getHitPoints();
-                                bullet.moveToStart();
-                            }
-                            */
-                                });
-                        try {
-                            Thread.sleep(10);
-                        } catch (Exception e) {
-                            System.err.println(e);
-                        }
-                        //sleep для отрисовки
+        thread = new Thread(() -> {
+            while (true) {
+                Platform.runLater(() -> {
+                    bigTarget.moveAction();
+                    smallTarget.moveAction();
+                    bullet.move();
+                    int points = getHitPoints();
+                    if (points != 0) {
+                        sumPoints += points;
+                        bullet.moveToStart();
                     }
                 });
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        });
 
         thread.start();
     }
 
-    public double getHitPoints() {
-        if (hittingBigTarget()) return 10;
-        else if (hittingSmallTarget()) return 20;
-        else return 0;
+    public void StopAction() {
     }
 
-    private boolean isHitting() {
-        return hittingBigTarget() || hittingSmallTarget();
-    }
-
-    public void ShootAction() {
-        bullet.Shooting();
+    public int getHitPoints() {
+        if (bullet.getX() > bigTarget.getX() + bigTarget.getRadius()) {
+            if (hittingSmallTarget()) return 20;
+        } else {
+            if (hittingBigTarget()) return 10;
+        }
+        return 0;
     }
 
     private boolean hittingBigTarget() {
@@ -86,21 +77,28 @@ public class Game {
     }
 
     private double distantToSmallTarget() {
-        double sum = square(smallTarget.getX()) + square(smallTarget.getY());
-        return Math.sqrt(sum);
+        double x = smallTarget.getX();
+        double y = smallTarget.getY();
+        return distantFromBullet(x, y);
     }
 
     private double distantToBigTarget() {
-        double sum = square(bigTarget.getX()) + square(bigTarget.getY());
-        return Math.sqrt(sum);
+        double x = bigTarget.getX();
+        double y = bigTarget.getY();
+        return distantFromBullet(x, y);
+    }
+
+    private double distantFromBullet(double x, double y) {
+        double distantX = square(x - bullet.getX());
+        double distantY = square(y - bullet.getY());
+        return Math.sqrt(distantX + distantY);
+    }
+
+    public void ShootAction() {
+        bullet.Shooting();
     }
 
     public void bulletStartPosition(MouseEvent event) {
-        Platform.runLater(bullet.setStartPositionBullet(event));
+        Platform.runLater(() -> bullet.setStartPositionBullet(event));
     }
-
-    double square(double x) {
-        return x * x;
-    }
-
 }

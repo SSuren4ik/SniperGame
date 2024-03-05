@@ -1,5 +1,7 @@
 package com.example.snipergame.gameElements;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 public class Target {
@@ -12,10 +14,6 @@ public class Target {
         circle = cr;
         this.speed = speed;
         moveDown = true;
-    }
-
-    public void setPoligonHeight(double value) {
-        poligonHeight = value;
     }
 
     public void moveAction() {
@@ -61,6 +59,10 @@ public class Target {
 
     private boolean canMoveUp() {
         return getY() - speed - circle.getRadius() > 0;
+    }
+
+    public void setPoligonHeight(double value) {
+        poligonHeight = value;
     }
 
 }

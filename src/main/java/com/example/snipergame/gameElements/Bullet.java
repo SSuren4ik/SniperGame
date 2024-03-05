@@ -15,7 +15,7 @@ public class Bullet {
     public Bullet(Circle cr) {
         this.cr = cr;
         isShooting = false;
-        speed = 6;
+        speed = 8;
     }
 
     public void setPoligonParams(Pane poligon) {
@@ -23,13 +23,12 @@ public class Bullet {
         poligonHeight = poligon.getHeight();
     }
 
-    public void move() throws Exception {
+    public void move() {
         if (canMove()) {
             cr.setLayoutX(getX() + speed);
         } else {
             cr.setLayoutX(startPositionX());
             isShooting = false;
-            throw new Exception();
         }
     }
 
@@ -38,11 +37,10 @@ public class Bullet {
         isShooting = false;
     }
 
-    public Runnable setStartPositionBullet(MouseEvent event) {
+    public void setStartPositionBullet(MouseEvent event) {
         cr.setLayoutX(startPositionX());
         double y = correctBulletCoordinateY(event.getY());
         cr.setLayoutY(y);
-        return null;
     }
 
     double correctBulletCoordinateY(double y) {
@@ -69,7 +67,11 @@ public class Bullet {
         return cr.getRadius();
     }
 
-    double getX() {
+    public double getX() {
         return cr.getLayoutX();
+    }
+
+    public double getY() {
+        return cr.getLayoutY();
     }
 }
