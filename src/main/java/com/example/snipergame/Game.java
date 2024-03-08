@@ -17,6 +17,8 @@ public class Game {
     private Thread thread;
     private double sumPoints;
 
+    private boolean fPause = false;
+
     public void initialize(Pane poligon, Circle bigTargetCircle, Circle smallTargetCircle, Circle bulletCircle) {
         this.poligonPane = poligon;
 
@@ -57,6 +59,7 @@ public class Game {
     }
 
     public void StopAction() {
+
     }
 
     public int getHitPoints() {
