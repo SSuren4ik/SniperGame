@@ -1,10 +1,7 @@
 package com.example.snipergame;
 
-import com.example.snipergame.gameElements.Bullet;
-import com.example.snipergame.gameElements.Target;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -18,6 +15,12 @@ public class SniperGameController {
     private Pane poligonPane;
 
     @FXML
+    private TextField scoreText;
+
+    @FXML
+    private TextField shootsText;
+
+    @FXML
     private Circle bullet;
 
     @FXML
@@ -27,6 +30,8 @@ public class SniperGameController {
     private Circle smallCircle;
 
     private Game game;
+
+    private GameInfo gameInfo;
 
     public void initialize() {
         Image targetImage = new Image("TargetImage.jpg");
@@ -38,6 +43,7 @@ public class SniperGameController {
         bullet.setStroke(Color.GREEN);
         bullet.setFill(new ImagePattern(bulletImage));
     }
+
     @FXML
     protected void clickM(MouseEvent event) {
         if (game == null) return;
@@ -46,20 +52,42 @@ public class SniperGameController {
 
     @FXML
     protected void onStartClick() {
-        if (game != null) return;
-        game = new Game();
-        game.initialize(poligonPane, bigCircle, smallCircle, bullet);
-        game.moveAction();
+        if (game == null) {
+            game = new Game();
+            gameInfo = new GameInfo(scoreText, shootsText);
+            game.initialize(poligonPane, bigCircle, smallCircle, bullet, gameInfo);
+        }
+        game.Start();
     }
+
     @FXML
-    protected void onStopClick() {
-        if(game == null)
+    protected void onPauseClick() {
+        if (game == null)
             return;
-        game.StopAction();
+        game.Pause();
+    }
+
+    @FXML
+    protected void onContinueClick() {
+        if (game == null)
+            return;
+        game.Continue();
+    }
+
+    @FXML
+    protected void onEndGameClick() {
+        if (game == null)
+            return;
+        game.endGame();
+        gameInfo.reset();
     }
 
     @FXML
     protected void onShootClick() {
+        if (game == null || game.getPause()) {
+            return;
+        }
         game.ShootAction();
+        gameInfo.upShoots();
     }
 }

@@ -15,7 +15,7 @@ public class Bullet {
     public Bullet(Circle cr) {
         this.cr = cr;
         isShooting = false;
-        speed = 8;
+        speed = 9;
     }
 
     public void setPoligonParams(Pane poligon) {

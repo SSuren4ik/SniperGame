@@ -14,11 +14,19 @@
          <children>
             <Pane layoutX="568.0" prefHeight="400.0" prefWidth="142.0">
                 <style>-fx-background-color: white;</style>
+               <children>
+                  <TextField fx:id="scoreText" layoutX="70.0" layoutY="82.0" prefHeight="30.0" prefWidth="70.0" text="0" />
+                  <TextField editable="false" layoutX="6.0" layoutY="82.0" prefHeight="30.0" prefWidth="58.0" text="Score:" />
+                  <TextField editable="false" layoutX="6.0" layoutY="122.0" prefHeight="30.0" prefWidth="58.0" text="Shoots:" />
+                  <TextField fx:id="shootsText" layoutX="70.0" layoutY="122.0" prefHeight="30.0" prefWidth="70.0" text="0" />
+               </children>
             </Pane>
              <Pane layoutY="338.0" prefHeight="62.0" prefWidth="568.0" style="-fx-background-color: red;">
-                 <Button layoutX="10.0" layoutY="16.0" mnemonicParsing="false" onAction="#onStartClick" prefHeight="30.0" prefWidth="50.0" text="Start" />
-                 <Button layoutX="67.0" layoutY="16.0" mnemonicParsing="false" onAction="#onShootClick" prefHeight="30.0" prefWidth="50.0" text="Shoot" />
-               <Button layoutX="126.0" layoutY="16.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" text="Stop" />
+                 <Button layoutX="10.0" layoutY="16.0" mnemonicParsing="false" onAction="#onStartClick" prefHeight="30.0" prefWidth="70.0" text="Start" />
+                 <Button layoutX="86.0" layoutY="16.0" mnemonicParsing="false" onAction="#onShootClick" prefHeight="30.0" prefWidth="70.0" text="Shoot" />
+                 <Button layoutX="238.0" layoutY="16.0" mnemonicParsing="false" onAction="#onContinueClick" prefHeight="30.0" prefWidth="70.0" text="Continue" />
+                 <Button layoutX="162.0" layoutY="16.0" mnemonicParsing="false" onAction="#onPauseClick" prefHeight="30.0" prefWidth="70.0" text="Pause" />
+                 <Button layoutX="480.0" layoutY="16.0" mnemonicParsing="false" onAction="#onEndGameClick" prefHeight="30.0" prefWidth="80.0" text="End Game" />
              </Pane>
              <Pane fx:id="poligonPane" onMouseClicked="#clickM" prefHeight="338.0" prefWidth="568.0" style="-fx-background-color: green;">
                  <Circle fx:id="bullet" fill="DODGERBLUE" layoutX="15.0" layoutY="169.0" radius="15.0" stroke="green" strokeType="INSIDE" />

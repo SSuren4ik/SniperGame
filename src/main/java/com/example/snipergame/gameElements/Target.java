@@ -53,6 +53,13 @@ public class Target {
         return circle.getRadius();
     }
 
+    public void moveToStart() {
+        circle.setLayoutY(getRadius());
+    }
+
+    public void setPoligonHeight(double value) {
+        poligonHeight = value;
+    }
     private boolean canMoveDown() {
         return getY() + speed + circle.getRadius() < poligonHeight;
     }
@@ -61,8 +68,5 @@ public class Target {
         return getY() - speed - circle.getRadius() > 0;
     }
 
-    public void setPoligonHeight(double value) {
-        poligonHeight = value;
-    }
 
 }

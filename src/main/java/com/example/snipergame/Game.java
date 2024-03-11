@@ -11,55 +11,105 @@ import static com.example.snipergame.supportFunctions.MathUtils.square;
 
 public class Game {
     private Pane poligonPane;
+
+    private GameInfo gameInfo;
     private Target bigTarget;
     private Target smallTarget;
     private Bullet bullet;
     private Thread thread;
     private double sumPoints;
 
-    private boolean fPause = false;
+    private boolean isPause = false;
+    private boolean isRun = false;
 
-    public void initialize(Pane poligon, Circle bigTargetCircle, Circle smallTargetCircle, Circle bulletCircle) {
+    public void initialize(Pane poligon, Circle bigTargetCircle, Circle smallTargetCircle, Circle bulletCircle, GameInfo gameInfo) {
         this.poligonPane = poligon;
 
-        bigTarget = new Target(bigTargetCircle, 2);
+        this.gameInfo = gameInfo;
+
+        bigTarget = new Target(bigTargetCircle, 1);
         bigTarget.setPoligonHeight(poligonPane.getHeight());
 
-        smallTarget = new Target(smallTargetCircle, 4);
+        smallTarget = new Target(smallTargetCircle, 2);
         smallTarget.setPoligonHeight(poligonPane.getHeight());
 
         bullet = new Bullet(bulletCircle);
         bullet.setPoligonParams(poligonPane);
     }
 
-    public void moveAction() {
-        if (thread != null) return;
+    public void Start() {
+        if (thread != null)
+            return;
+        isRun = true;
 
         thread = new Thread(() -> {
-            while (true) {
-                Platform.runLater(() -> {
-                    bigTarget.moveAction();
-                    smallTarget.moveAction();
-                    bullet.move();
-                    int points = getHitPoints();
-                    if (points != 0) {
-                        sumPoints += points;
-                        bullet.moveToStart();
+            try {
+                while (isRun) {
+                    if (isPause) {
+                        threadStop();
                     }
-                });
-                try {
+                    move();
                     Thread.sleep(10);
-                } catch (Exception e) {
-                    System.err.println(e);
                 }
+            } catch (Exception e) {
+                System.err.println(e);
             }
         });
 
         thread.start();
     }
 
-    public void StopAction() {
+    public void Pause() {
+        isPause = true;
+    }
 
+    public void Continue() {
+        isPause = false;
+        synchronized (this) {
+            notifyAll();
+        }
+    }
+
+    public void endGame() {
+        if (thread == null) {
+            return;
+        }
+        isRun = false;
+        moveAllToStart();
+        thread.interrupt();
+        thread = null;
+
+    }
+
+    void moveAllToStart() {
+        Platform.runLater(() -> {
+            bullet.moveToStart();
+            bigTarget.moveToStart();
+            smallTarget.moveToStart();
+        });
+    }
+
+    void move() {
+        Platform.runLater(() -> {
+            bigTarget.moveAction();
+            smallTarget.moveAction();
+            bullet.move();
+            int points = getHitPoints();
+            if (points != 0) {
+                gameInfo.upScore(points);
+                bullet.moveToStart();
+            }
+        });
+    }
+
+    void threadStop() {
+        synchronized (this) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public int getHitPoints() {
@@ -70,6 +120,7 @@ public class Game {
         }
         return 0;
     }
+
 
     private boolean hittingBigTarget() {
         return distantToBigTarget() < bigTarget.getRadius();
@@ -99,6 +150,10 @@ public class Game {
 
     public void ShootAction() {
         bullet.Shooting();
+    }
+
+    public boolean getPause() {
+        return isPause;
     }
 
     public void bulletStartPosition(MouseEvent event) {
