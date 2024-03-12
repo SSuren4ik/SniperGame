@@ -31,8 +31,6 @@ public class SniperGameController {
 
     private Game game;
 
-    private GameInfo gameInfo;
-
     @FXML
     protected void clickM(MouseEvent event) {
         if (game == null) return;
@@ -43,7 +41,7 @@ public class SniperGameController {
     protected void onStartClick() {
         if (game == null) {
             game = new Game();
-            gameInfo = new GameInfo(scoreText, shootsText);
+            GameInfo gameInfo = new GameInfo(scoreText, shootsText);
             game.initialize(poligonPane, bigCircle, smallCircle, bullet, gameInfo);
         }
         game.Start();
@@ -68,7 +66,7 @@ public class SniperGameController {
         if (game == null)
             return;
         game.endGame();
-        gameInfo.reset();
+        game.getGameInfo().reset();
     }
 
     @FXML
@@ -77,6 +75,6 @@ public class SniperGameController {
             return;
         }
         game.ShootAction();
-        gameInfo.upShoots();
+        game.getGameInfo().upShoots();
     }
 }

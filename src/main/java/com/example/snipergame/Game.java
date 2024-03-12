@@ -156,6 +156,10 @@ public class Game {
         return isPause;
     }
 
+    public GameInfo getGameInfo () {
+        return gameInfo;
+    }
+
     public void bulletStartPosition(MouseEvent event) {
         Platform.runLater(() -> bullet.setStartPositionBullet(event));
     }

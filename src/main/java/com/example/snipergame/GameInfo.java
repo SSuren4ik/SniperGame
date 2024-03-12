@@ -16,14 +16,6 @@ public class GameInfo {
         shoots = 0;
     }
 
-    public double getScore() {
-        return score;
-    }
-
-    public int getShoots() {
-        return shoots;
-    }
-
     public void upScore(double score) {
         this.score += score;
         String text = Double.toString(this.score);
