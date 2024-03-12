@@ -33,17 +33,6 @@ public class SniperGameController {
 
     private GameInfo gameInfo;
 
-    public void initialize() {
-        Image targetImage = new Image("TargetImage.jpg");
-        Image bulletImage = new Image("BulletImage.png");
-
-        bigCircle.setFill(new ImagePattern(targetImage));
-        smallCircle.setFill(new ImagePattern(targetImage));
-
-        bullet.setStroke(Color.GREEN);
-        bullet.setFill(new ImagePattern(bulletImage));
-    }
-
     @FXML
     protected void clickM(MouseEvent event) {
         if (game == null) return;

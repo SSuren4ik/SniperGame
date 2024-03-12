@@ -5,6 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
+<?import javafx.scene.paint.ImagePattern?>
+<?import javafx.scene.image.Image?>
 <VBox alignment="CENTER" prefHeight="450.0" prefWidth="750.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.snipergame.SniperGameController">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -29,9 +31,33 @@
                  <Button layoutX="480.0" layoutY="16.0" mnemonicParsing="false" onAction="#onEndGameClick" prefHeight="30.0" prefWidth="80.0" text="End Game" />
              </Pane>
              <Pane fx:id="poligonPane" onMouseClicked="#clickM" prefHeight="338.0" prefWidth="568.0" style="-fx-background-color: green;">
-                 <Circle fx:id="bullet" fill="DODGERBLUE" layoutX="15.0" layoutY="169.0" radius="15.0" stroke="green" strokeType="INSIDE" />
-                 <Circle fx:id="smallCircle" fill="DODGERBLUE" layoutX="550.0" layoutY="15.0" radius="15.0" stroke="green" strokeType="INSIDE" />
-                 <Circle fx:id="bigCircle" fill="DODGERBLUE" layoutX="425.0" layoutY="25.0" radius="25.0" stroke="green" strokeType="INSIDE" />
+                 <Circle fx:id="bullet" layoutX="15.0" layoutY="169.0" radius="15.0" strokeType="INSIDE">
+                     <fill>
+                         <ImagePattern>
+                             <image>
+                                 <Image url="@../../../BulletImage.png"/>
+                             </image>
+                         </ImagePattern>
+                     </fill>
+                 </Circle>
+                 <Circle fx:id="smallCircle" layoutX="550.0" layoutY="15.0" radius="15.0" strokeType="INSIDE">
+                     <fill>
+                         <ImagePattern>
+                             <image>
+                                 <Image url="@../../../TargetImage.jpg"/>
+                             </image>
+                         </ImagePattern>
+                     </fill>
+                 </Circle>
+                 <Circle fx:id="bigCircle" layoutX="425.0" layoutY="25.0" radius="25.0" strokeType="INSIDE">
+                     <fill>
+                         <ImagePattern>
+                             <image>
+                                 <Image url="@../../../TargetImage.jpg"/>
+                             </image>
+                         </ImagePattern>
+                     </fill>
+                 </Circle>
              </Pane>
          </children>
       </Pane>
